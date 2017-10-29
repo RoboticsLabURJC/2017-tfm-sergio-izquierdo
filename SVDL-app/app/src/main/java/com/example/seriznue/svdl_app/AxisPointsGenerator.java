@@ -29,58 +29,26 @@ public class AxisPointsGenerator {
         return new AxisPointsGenerator(camera);
     }
 
-    /*
-    private MatOfPoint3f get_3d_Axis_X_points() {
+    public MatOfPoint3f get_3d_Axis_points(int axis, int num) {
 
-        List<Point3> objectPointsList = new ArrayList<Point3>(10);
-        objectPointsList.add(new Point3(0.0f, 0.0f, 0.0f));
+        List<Point3> objectPointsList = new ArrayList<Point3>(num);
 
-        objectPointsList.add(new Point3(1.0f, 0.0f, 0.0f));
-        objectPointsList.add(new Point3(2.0f, 0.0f, 0.0f));
-        objectPointsList.add(new Point3(3.0f, 0.0f, 0.0f));
-        objectPointsList.add(new Point3(4.0f, 0.0f, 0.0f));
-        objectPointsList.add(new Point3(5.0f, 0.0f, 0.0f));
+        int i = 0;
 
-        MatOfPoint3f modelPoints = new MatOfPoint3f();
-        modelPoints.fromList(objectPointsList);
-
-        return modelPoints;
-    }
-
-    private MatOfPoint3f get_3d_Axis_Y_points() {
-
-        List<Point3> objectPointsList = new ArrayList<Point3>(10);
-        objectPointsList.add(new Point3(0.0f, 0.0f, 0.0f));
-
-        objectPointsList.add(new Point3(0.0f, 1.0f, 0.0f));
-        objectPointsList.add(new Point3(0.0f, 2.0f, 0.0f));
-        objectPointsList.add(new Point3(0.0f, 3.0f, 0.0f));
-        objectPointsList.add(new Point3(0.0f, 4.0f, 0.0f));
-        objectPointsList.add(new Point3(0.0f, 5.0f, 0.0f));
+        while (i < num) {
+            if(axis == 0)
+                objectPointsList.add(new Point3((float)i, 0.0f, 0.0f));
+            else if(axis == 1)
+                objectPointsList.add(new Point3(0.0f, (float)i, 0.0f));
+            else if(axis == 2)
+                objectPointsList.add(new Point3(0.0f, 0.0f, (float)i));
+        }
 
         MatOfPoint3f modelPoints = new MatOfPoint3f();
         modelPoints.fromList(objectPointsList);
 
         return modelPoints;
     }
-
-    private MatOfPoint3f get_3d_Axis_Z_points() {
-
-        List<Point3> objectPointsList = new ArrayList<Point3>(10);
-        objectPointsList.add(new Point3(0.0f, 0.0f, 0.0f));
-
-        objectPointsList.add(new Point3(0.0f, 0.0f, 1.0f));
-        objectPointsList.add(new Point3(0.0f, 0.0f, 2.0f));
-        objectPointsList.add(new Point3(0.0f, 0.0f, 3.0f));
-        objectPointsList.add(new Point3(0.0f, 0.0f, 4.0f));
-        objectPointsList.add(new Point3(0.0f, 0.0f, 5.0f));
-
-        MatOfPoint3f modelPoints = new MatOfPoint3f();
-        modelPoints.fromList(objectPointsList);
-
-        return modelPoints;
-    }
-    */
 
     public MatOfPoint3f get_3d_Axis_X_points() {
 
@@ -123,21 +91,14 @@ public class AxisPointsGenerator {
         List<Point> imagePointsList = new ArrayList<Point>(10);
         MatOfPoint2f imagePoints = new MatOfPoint2f();
         imagePoints.fromList(imagePointsList);
-        Mat rVec = Camera.getInstance().getRVec();
-        Mat tVec = Camera.getInstance().getTVec();
-        int depth = tVec.depth();
-        Mat k = Camera.getInstance().getCameraMatrix();
-        Mat d = Camera.getInstance().getDistortionMat();
-        MatOfDouble dm = Camera.getInstance().getDistortionModel();
-
         AxisPointsGenerator axisPointsGenerator = AxisPointsGenerator.createAxisPointsGenerator(Camera.getInstance());
 
         if(axis == 0)
-            Calib3d.projectPoints(axisPointsGenerator.get_3d_Axis_X_points(), rVec, tVec, k, dm, imagePoints);
+            return ProjectPoints(axisPointsGenerator.get_3d_Axis_X_points());
         if(axis == 1)
-            Calib3d.projectPoints(axisPointsGenerator.get_3d_Axis_Y_points(), rVec, tVec, k, dm, imagePoints);
+            return ProjectPoints(axisPointsGenerator.get_3d_Axis_Y_points());
         if(axis == 2)
-            Calib3d.projectPoints(axisPointsGenerator.get_3d_Axis_Z_points(), rVec, tVec, k, dm, imagePoints);
+            return ProjectPoints(axisPointsGenerator.get_3d_Axis_Z_points());
 
         return imagePoints;
     }
@@ -146,20 +107,105 @@ public class AxisPointsGenerator {
 
         List<Point3> objectPointsList = new ArrayList<Point3>(10);
 
-        objectPointsList.add(new Point3(0.5f, 0.5f, 0.5f));
-        objectPointsList.add(new Point3(1.5f, 0.5f, 0.5f));
-        objectPointsList.add(new Point3(1.5f, 1.5f, 0.5f));
-        objectPointsList.add(new Point3(0.5f, 1.5f, 0.5f));
-        objectPointsList.add(new Point3(0.5f, 0.5f, 1.5f));
-        objectPointsList.add(new Point3(1.5f, 0.5f, 1.5f));
-        objectPointsList.add(new Point3(1.5f, 1.5f, 1.5f));
-        objectPointsList.add(new Point3(0.5f, 1.5f, 1.5f));
+        objectPointsList.add(new Point3(1.5f, 1.5f, -1.5f));
+        objectPointsList.add(new Point3(3.5f, 1.5f, -1.5f));
+        objectPointsList.add(new Point3(3.5f, 3.5f, -1.5f));
+        objectPointsList.add(new Point3(1.5f, 3.5f, -1.5f));
+        objectPointsList.add(new Point3(1.5f, 1.5f, -3.5f));
+        objectPointsList.add(new Point3(3.5f, 1.5f, -3.5f));
+        objectPointsList.add(new Point3(3.5f, 3.5f, -3.5f));
+        objectPointsList.add(new Point3(1.5f, 3.5f, -3.5f));
 
         MatOfPoint3f modelPoints = new MatOfPoint3f();
         modelPoints.fromList(objectPointsList);
 
         return modelPoints;
     }
+
+    public MatOfPoint2f get_plane_lines() {
+
+        List<Point> imagePointsList = new ArrayList<Point>(10);
+        MatOfPoint2f imagePoints = new MatOfPoint2f();
+        imagePoints.fromList(imagePointsList);
+
+        List<Point3> objectPointsList = new ArrayList<Point3>(10);
+
+        objectPointsList.add(new Point3(1f, 0f, 0f));
+        objectPointsList.add(new Point3(1f, 0f, 10f));
+        objectPointsList.add(new Point3(2f, 0f, 0f));
+        objectPointsList.add(new Point3(2f, 0f, 10f));
+        objectPointsList.add(new Point3(3f, 0f, 0f));
+        objectPointsList.add(new Point3(3f, 0f, 10f));
+        objectPointsList.add(new Point3(4f, 0f, 0f));
+        objectPointsList.add(new Point3(4f, 0f, 10f));
+        objectPointsList.add(new Point3(5f, 0f, 0f));
+        objectPointsList.add(new Point3(5f, 0f, 10f));
+        objectPointsList.add(new Point3(6f, 0f, 0f));
+        objectPointsList.add(new Point3(6f, 0f, 10f));
+        objectPointsList.add(new Point3(7f, 0f, 0f));
+        objectPointsList.add(new Point3(7f, 0f, 10f));
+        objectPointsList.add(new Point3(8f, 0f, 0f));
+        objectPointsList.add(new Point3(8f, 0f, 10f));
+        objectPointsList.add(new Point3(9f, 0f, 0f));
+        objectPointsList.add(new Point3(9f, 0f, 10f));
+        objectPointsList.add(new Point3(10f, 0f, 0f));
+        objectPointsList.add(new Point3(10f, 0f, 10f));
+
+        objectPointsList.add(new Point3(0f, 0f, 1f));
+        objectPointsList.add(new Point3(10f, 0f, 1f));
+        objectPointsList.add(new Point3(0f, 0f, 2f));
+        objectPointsList.add(new Point3(10f, 0f, 2f));
+        objectPointsList.add(new Point3(0f, 0f, 3f));
+        objectPointsList.add(new Point3(10f, 0f, 3f));
+        objectPointsList.add(new Point3(0f, 0f, 4f));
+        objectPointsList.add(new Point3(10f, 0f, 4f));
+        objectPointsList.add(new Point3(0f, 0f, 5f));
+        objectPointsList.add(new Point3(10f, 0f, 5f));
+        objectPointsList.add(new Point3(0f, 0f, 6f));
+        objectPointsList.add(new Point3(10f, 0f, 6f));
+        objectPointsList.add(new Point3(0f, 0f, 7f));
+        objectPointsList.add(new Point3(10f, 0f, 7f));
+        objectPointsList.add(new Point3(0f, 0f, 8f));
+        objectPointsList.add(new Point3(10f, 0f, 8f));
+        objectPointsList.add(new Point3(0f, 0f, 9f));
+        objectPointsList.add(new Point3(10f, 0f, 9f));
+        objectPointsList.add(new Point3(0f, 0f, 10f));
+        objectPointsList.add(new Point3(10f, 0f, 10f));
+
+
+        MatOfPoint3f modelPoints = new MatOfPoint3f();
+        modelPoints.fromList(objectPointsList);
+
+        return ProjectPoints(modelPoints);
+    }
+
+    public MatOfPoint2f get_Cube_points() {
+
+        List<Point> imagePointsList = new ArrayList<Point>(10);
+        MatOfPoint2f imagePoints = new MatOfPoint2f();
+        imagePoints.fromList(imagePointsList);
+
+        AxisPointsGenerator axisPointsGenerator = AxisPointsGenerator.createAxisPointsGenerator(Camera.getInstance());
+
+        return ProjectPoints(axisPointsGenerator.get_3d_Cube_points());
+    }
+
+    public MatOfPoint2f ProjectPoints(MatOfPoint3f points3D) {
+
+        List<Point> imagePointsList = new ArrayList<Point>(10);
+        MatOfPoint2f imagePoints = new MatOfPoint2f();
+        imagePoints.fromList(imagePointsList);
+        Mat rVec = Camera.getInstance().getRVec();
+        Mat tVec = Camera.getInstance().getTVec();
+        Mat k = Camera.getInstance().getCameraMatrix();
+        MatOfDouble dm = Camera.getInstance().getDistortionModel();
+
+        Calib3d.projectPoints(points3D, rVec, tVec, k, dm, imagePoints);
+
+        return imagePoints;
+    }
+
+
 
 
 

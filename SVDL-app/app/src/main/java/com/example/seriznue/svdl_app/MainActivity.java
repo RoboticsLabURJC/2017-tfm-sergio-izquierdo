@@ -117,6 +117,7 @@ public class MainActivity extends AppCompatActivity implements CameraBridgeViewB
     @Override
     public Mat onCameraFrame(CameraBridgeViewBase.CvCameraViewFrame inputFrame) {
 
+        Camera.getInstance().changePosition();
         mRgba = inputFrame.rgba();
 
         List<Point> lineX = axisPointsGenerator.get_Axis_points(0).toList();
@@ -127,19 +128,15 @@ public class MainActivity extends AppCompatActivity implements CameraBridgeViewB
         Core.line(mRgba, lineY.get(0), lineY.get(1), new Scalar(0, 256, 0));
         Core.line(mRgba, lineZ.get(0), lineZ.get(1), new Scalar(0, 0, 256));
 
-        /*
-        for(Point point: axisPointsGenerator.get_Axis_points(0).toList()) {
-            Core.circle(mRgba, point, 5, new Scalar(256, 0, 0), -1);
+        for(Point point: axisPointsGenerator.get_Cube_points().toList()) {
+            Core.circle(mRgba, point, 5, new Scalar(256, 255, 255), -1);
         }
 
-        for(Point point: axisPointsGenerator.get_Axis_points(1).toList()) {
-            Core.circle(mRgba, point, 5, new Scalar(0, 256, 0), -1);
-        }
+        List<Point> pointsPlane = axisPointsGenerator.get_plane_lines().toList();
 
-        for(Point point: axisPointsGenerator.get_Axis_points(2).toList()) {
-            Core.circle(mRgba, point, 5, new Scalar(0, 0, 256), -1);
+        for(int i = 0; i < pointsPlane.size(); i+=2) {
+            Core.line(mRgba, pointsPlane.get(i), pointsPlane.get(i+1), new Scalar(256, 255, 255));
         }
-        */
 
         return mRgba;
     }

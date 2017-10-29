@@ -11,11 +11,11 @@ import org.opencv.core.MatOfDouble;
 import java.util.ArrayList;
 
 public class Camera {
-    private double xo = -1.0, yo = -1.0, zo = -1.0;
+    private double xo = -1.0, yo = -1.0, zo = -10.0;
 
     private double omega = 0.0, phi = 0.0, kappa = 0.0;
 
-    private double fx = 100, fy = 100, cx = 960.0 * 0.5, cy = 720.0 * 0.5;
+    private double fx = 150, fy = 150, cx = 960.0 * 0.5, cy = 720.0 * 0.5;
 
     private double k1 = 0.0, k2 = 0.0, p1 = 0.0, p2 = 0.0, k3 = 0.0;
 
@@ -29,7 +29,14 @@ public class Camera {
         if (instance == null) {
             instance = new Camera();
         }
+
         return instance;
+    }
+
+    public void changePosition() {
+        omega += 0.01;
+        phi += 0.01;
+        kappa += 0.01;
     }
 
     public double getXo() {

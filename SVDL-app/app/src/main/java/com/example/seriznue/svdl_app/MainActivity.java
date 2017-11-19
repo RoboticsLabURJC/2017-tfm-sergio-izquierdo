@@ -124,9 +124,9 @@ public class MainActivity extends AppCompatActivity implements CameraBridgeViewB
         List<Point> lineY = axisPointsGenerator.get_Axis_points(1).toList();
         List<Point> lineZ = axisPointsGenerator.get_Axis_points(2).toList();
 
-        Core.line(mRgba, lineX.get(0), lineX.get(1), new Scalar(256, 0, 0));
-        Core.line(mRgba, lineY.get(0), lineY.get(1), new Scalar(0, 256, 0));
-        Core.line(mRgba, lineZ.get(0), lineZ.get(1), new Scalar(0, 0, 256));
+        Core.line(mRgba, lineX.get(0), lineX.get(1), new Scalar(256, 0, 0), 5);
+        Core.line(mRgba, lineY.get(0), lineY.get(1), new Scalar(0, 256, 0), 5);
+        Core.line(mRgba, lineZ.get(0), lineZ.get(1), new Scalar(0, 0, 256), 5);
 
         for(Point point: axisPointsGenerator.get_Cube_points().toList()) {
             Core.circle(mRgba, point, 5, new Scalar(256, 255, 255), -1);
